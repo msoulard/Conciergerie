@@ -38,4 +38,24 @@
 		}
 		mysqli_close ($Connect);
     }
+	
+	function obtenirReferenceArticle(){
+		include('connexionBdd.php');
+		$Query = "select referenceArticle from article;";
+		$Result = $Connect->query($Query);
+		while($Data = mysqli_fetch_array($Result)){
+            echo utf8_decode($Data[0]);
+		}
+		mysqli_close ($Connect);
+    }
+	
+	function obtenirDescriptionArticle(){
+		include('connexionBdd.php');
+		$Query = "select descriptionArticle from article;";
+		$Result = $Connect->query($Query);
+		while($Data = mysqli_fetch_array($Result)){
+            echo utf8_decode($Data[0]);
+		}
+		mysqli_close ($Connect);
+    }
 ?>

@@ -58,4 +58,34 @@
 		}
 		mysqli_close ($Connect);
     }
+	
+	function obtenirPrixAchatArticle(){
+		include('connexionBdd.php');
+		$Query = "select prixAchatArticle from article;";
+		$Result = $Connect->query($Query);
+		while($Data = mysqli_fetch_array($Result)){
+            echo utf8_decode($Data[0]);
+		}
+		mysqli_close ($Connect);
+    }
+	
+	function obtenirPrixVenteArticle(){
+		include('connexionBdd.php');
+		$Query = "select prixVenteArticle from article;";
+		$Result = $Connect->query($Query);
+		while($Data = mysqli_fetch_array($Result)){
+            echo utf8_decode($Data[0]);
+		}
+		mysqli_close ($Connect);
+    }
+	
+	function obtenirFournisseurArticle(){
+		include('connexionBdd.php');
+		$Query = "select fournisseurArticle from article;";
+		$Result = $Connect->query($Query);
+		while($Data = mysqli_fetch_array($Result)){
+            echo utf8_decode($Data[0]);
+		}
+		mysqli_close ($Connect);
+    }
 ?>
