@@ -84,9 +84,27 @@
 		<br>
 		<br>
 		<a>Les commandes : </a>
+		<ul>
+			<?                
+          $db = new PDO("mysql:host=localhost;dbname=conciergerie","root","");
+          $requeteListe=$db->prepare("select numeroCommande, pointsCommande from commande join commandepasseepar using(idCommande) join client using(idClient) where numeroClient=:numero;");
+          $requeteListe->bindValue(':numero', $numero);
+		  $requeteListe->execute();
+            while($row=$requeteListe->fetch()){
+                ?>
+				<li><?php echo $row['numeroCommande']?> : <?php echo $row['pointsCommande']?> points</li>
+		</ul>
+		<? }?>
 		<br>
-		<button>Créer une commande</button>
-		<button>Modifier</button>
-		<button>Supprimer</button>
+		<button onclick="window.location.href='creationCommande.php?numeroClient=<?=$row['numeroClient'];?>'">Créer une commande</button>
+		<button onclick="window.location.href='modificationClient.php?numeroClient=<?=$row['numeroClient'];?>'">Modifier</button>
+		<button onclick=<?php
+				$requeteSup=$db->prepare("delete from client where numeroClient=:numero;");
+				$numero = $row['numeroClient'];
+				$requeteSup->bindValue(':numero', $numero);
+				$requeteSup->execute();
+				?>>
+			Supprimer
+		</button>
     </body>
 </html>
