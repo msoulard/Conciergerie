@@ -14,22 +14,6 @@ function ouvrirListeDesConcierges(){
 	window.location.href='listeDesConcierges.php';
 }
 
-function ouvrirFicheClient(){
-	window.location.href='ficheClient.php';
-}
-
-function ouvrirFicheCommande(){
-	window.location.href='ficheCommande.php';
-}
-
-function ouvrirFicheArticle(){
-	window.location.href='ficheArticle.php';
-}
-
-function ouvrirFicheConcierge(){
-	window.location.href='ficheConcierge.php';
-}
-
 function ouvrirCreationClient(){
 	window.location.href='creationClient.php';
 }

@@ -15,7 +15,6 @@
 		</div>
 	</header>
     <body>
-        <?php include('accesBdd.php');?>
 	<h1 align=center>Liste des articles</h1>
 	<table border=2 align=center>
 		<tr>
@@ -30,17 +29,28 @@
 			<th>Actions</th>
 		</tr>
 		<tr>
-			<td><?php obtenirReferenceArticle();?></td>
-			<td><?php obtenirDescriptionArticle();?></td>
-			<td><?php obtenirPrixAchatArticle();?></td>
-			<td><?php obtenirPrixVenteArticle();?></td>
-			<td><?php obtenirFournisseurArticle();?></td>
-			<td><?php ?></td>
-			<td><?php ?></td>
-			<td><?php ?></td>
+		<?php                
+          $db = new PDO("mysql:host=localhost;dbname=conciergerie","root","");
+          $requeteTableau=$db->prepare("select referenceArticle, descriptionArticle, prixAchatArticle, prixVenteArticle, fournisseurArticle, lieuStock, quantiteStock, statutStock from article join stock using(idArticle); ");
+          $requeteTableau->execute();
+            while($row=$requeteTableau->fetch()){
+                ?>
+			<td><?php echo $row['referenceArticle']?></td>
+			<td><?php echo $row['descriptionArticle']?></td>
+			<td><?php echo $row['prixAchatArticle']?></td>
+			<td><?php echo $row['prixVenteArticle']?></td>
+			<td><?php echo $row['fournisseurArticle']?></td>
+			<td><?php echo $row['lieuStock']?></td>
+			<td><?php echo $row['quantiteStock']?></td>
+			<td><?php echo $row['statutStock']?></td>
 			<td>
-				<button onclick="ouvrirFicheArticle()">Détails</button>
-				<button>Supprimer</button>
+				<button onclick="window.location.href='ficheArticle.php?referenceArticle=<?=$row['referenceArticle'];?>">Détails</button>
+				<button onclick=<?php
+										$requeteSup=$db->prepare("delete from article where referenceArticle=:reference;");
+										$reference = $row['referenceArticle'];
+										$requeteSup->bindValue(':reference', $reference);
+										$requeteSup->execute();
+								?>>>Supprimer</button>
 			</td>
 		</tr>
 	</table>

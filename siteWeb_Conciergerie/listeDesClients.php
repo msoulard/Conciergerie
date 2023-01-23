@@ -15,7 +15,6 @@
 		</div>
 	</header>
     <body>
-        <?php include('accesBdd.php');?>
 	<h1 align=center>Liste des clients</h1>
 	<table border=2 align=center>
 		<tr>
@@ -26,15 +25,30 @@
 			<th>Actions</th>
 		</tr>
 		<tr>
-			<td><?php obtenirNumeroClient();?></td>
-			<td><?php obtenirNomClient();?></td>
-			<td><?php obtenirPrenomClient();?></td>
-			<td><?php obtenirFideliteClient();?></td>
+		<?php                
+          $db = new PDO("mysql:host=localhost;dbname=conciergerie","root","");
+          $requeteTableau=$db->prepare("select numeroClient, nomClient, prenomClient, nbPointsTotalClient, niveauFidelite from client join programmefidelite using(idProgrammeFidelite); ");
+          $requeteTableau->execute();
+            while($row=$requeteTableau->fetch()){
+                ?>
+			<td><?php echo $row['numeroClient']?></td>
+			<td><?php echo $row['nomClient']?></td>
+			<td><?php echo $row['prenomClient']?></td>
+			<td><?php echo $row['niveauFidelite']
+					  echo $row['nbPointsTotalClient']?></td>
 			<td>
-				<button onclick="ouvrirFicheClient()">Détails</button>
-				<button>Supprimer</button>
+				<button onclick="window.location.href='ficheClient.php?numeroClient=<?=$row['numeroClient'];?>">Détails</button>
+				<button onclick=<?php
+										$requeteSup=$db->prepare("delete from client where numeroClient=:numero;");
+										$numero = $row['numeroClient'];
+										$requeteSup->bindValue(':numero', $numero);
+										$requeteSup->execute();
+								?>>
+					Supprimer
+				</button>
 			</td>
 		</tr>
+			<?php }?>
 	</table>
 	<div align=center>
 		<button onclick="ouvrirCreationClient()">Ajouter un client</button>

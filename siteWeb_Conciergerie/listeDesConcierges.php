@@ -15,7 +15,6 @@
 		</div>
 	</header>
     <body>
-        <?php include('accesBdd.php');?>
 	<h1 align=center>Liste des concierges</h1>
 	<table border=2 align=center>
 		<tr>
@@ -27,14 +26,26 @@
 			<th>Actions</th>
 		</tr>
 		<tr>
-			<td><?php ?></td>
-			<td><?php ?></td>
-			<td><?php ?></td>
-			<td><?php ?></td>
-			<td><?php ?></td>
+		<?php                
+          $db = new PDO("mysql:host=localhost;dbname=conciergerie","root","");
+          $requeteTableau=$db->prepare("select numeroConcierge, nomConcierge, prenomConcierge, telConcierge,
+				mailConcierge from concierge; ");
+          $requeteTableau->execute();
+            while($row=$requeteTableau->fetch()){
+                ?>
+			<td><?php echo $row['numeroConcierge']?></td>
+			<td><?php echo $row['nomConcierge']?></td>
+			<td><?php echo $row['prenomConcierge']?></td>
+			<td><?php echo $row['telConcierge']?></td>
+			<td><?php echo $row['mailConcierge']?></td>
 			<td>
-				<button onclick="ouvrirFicheConcierge()">Détails</button>
-				<button>Supprimer</button>
+				<button onclick="window.location.href='ficheConcierge.php?numeroConcierge=<?=$row['numeroConcierge'];?>">Détails</button>
+				<button onclick=<?php
+										$requeteSup=$db->prepare("delete from concierge where numeroConcierge=:numero;");
+										$numero = $row['numeroConcierge'];
+										$requeteSup->bindValue(':numero', $numero);
+										$requeteSup->execute();
+								?>>Supprimer</button>
 			</td>
 		</tr>
 	</table>
