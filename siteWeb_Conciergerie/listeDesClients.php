@@ -37,7 +37,7 @@
 			<td><?php echo $row['niveauFidelite']
 					  echo $row['nbPointsTotalClient']?></td>
 			<td>
-				<button onclick="window.location.href='ficheClient.php?numeroClient=<?=$row['numeroClient'];?>">Détails</button>
+				<button onclick="window.location.href='ficheClient.php?numeroClient=<?=$row['numeroClient'];?>'">Détails</button>
 				<button onclick=<?php
 										$requeteSup=$db->prepare("delete from client where numeroClient=:numero;");
 										$numero = $row['numeroClient'];
