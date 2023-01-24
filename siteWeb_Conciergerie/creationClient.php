@@ -1,38 +1,4 @@
 <!DOCTYPE html>
-<?php
-	$db = new PDO("mysql:host=localhost;dbname=conciergerie","root","");
-	if(isset($_GET['numeroClient']) AND !empty($_GET['numeroClient'])){
-		$numero =$_GET['numeroClient'];
-		$recupDonnees=$db->prepare("SELECT nomClient, prenomClient, anniversaireClient, adresseClient,
-			telClient, mailClient, fbClient, instaClient, nbPointsTotalClient FROM client WHERE numeroClient=?;");
-		$recupDonnees->execute(array($numero));
-		if($recupDonnees->rowCount()>0){
-			$clientInfos=$recupDonnees->fetch();
-			$nom=$clientInfos['nomClient'];
-			$prenom=$clientInfos['prenomClient'];			
-			$anniversaire=$clientInfos['anniversaireClient'];
-			$adresse=$clientInfos['adresseClient'];
-			$tel=$clientInfos['telClient'];
-			$mail=$clientInfos['mailClient'];
-			$fb=$clientInfos['fbClient'];
-			$insta=$clientInfos['instaClient'];
-			$nbPointsTotal=$clientInfos['nbPointsTotalClient'];
-			
-			$recupDonnees=$db->prepare("SELECT niveauFidelite FROM programmefidelite join client using(idProgrammeFidelite) WHERE numeroClient=:numero;");
-			$recupDonnees->bindValue(':numero', $numero);
-			$recupDonnees->execute();
-			$clientInfos=$recupDonnees->fetch();
-			$fidelite=$clientInfos['niveauFidelite'];
-		}
-		else{
-			echo 'Aucun client trouvé';
-		}
-    }
-	else{
-		echo 'Aucun numéro de client trouvé';
-	}
-?>
-
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
@@ -49,62 +15,82 @@
 		</div>
 	</header>
     <body>
-		<h1 align=center>Fiche client</h1>
-		<a>N° client : <? =$numero?></a>
+		<h1 align=center>Création d'un client</h1>
+		<form method="post">
+		<label>N° client : </label>
+		<input name="numero" id="numero">
+		<br><br>
+		<label>Nom : </label>
+		<input name="nom" id="nom">
+		<br><br>
+		<label>Prénom : </label>
+		<input name="prenom" id="prenom">
+		<br><br>
+		<label>Anniversaire : </label>
+		<input name="anniversaire" id="anniversaire">
+		<br><br>
+		<label>Adresse : </label>
+		<input name="adresse" id="adresse">
+		<br><br>
+		<label>Téléphone : </label>
+		<input name="tel" id="tel">
+		<br><br>
+		<label>E-mail : </label>
+		<input name="mail" id="mail">
+		<br><br>
+		<label>Facebook : </label>
+		<input name="fb" id="fb">
+		<br><br>
+		<label>Instagram : </label>
+		<input name="insta" id="insta">
+		<br><br>
+		<label>Points : </label>
+		<input name="points" id="points">
+		</form>
 		<br>
-		<a>Nom : <? =$nom?></a>
 		<br>
-		<a>Prénom : <? =$prenom?></a>
-		<br>
-		<a>Anniversaire : <? =$anniversaire?></a>
-		<br>
-		<a>Adresse : <? =$adresse?></a>
-		<br>
-		<a>Facebook : <? =$fb?></a>
-		<br>
-		<a>Instagram : <? =$insta?></a>
-		<br>
-		<a>E-mail : <? =$mail?></a>
-		<br>
-		<a>Téléphone : <? =$tel?></a>
-		<br>
-		<br>
-		<a>Programme de fidélité : <? =$fidelite?> avec <? =$nbPointsTotal?> points</a>
-		<ul>
-			<?                
-          $db = new PDO("mysql:host=localhost;dbname=conciergerie","root","");
-          $requeteListe=$db->prepare("select  nbPoints, dateExpirationPoints from points join client using(idClient) where numeroClient=:numero; ");
-          $requeteListe->bindValue(':numero', $numero);
-		  $requeteListe->execute();
-            while($row=$requeteListe->fetch()){
-                ?>
-				<li><?php echo $row['nbPoints']?> points expirent le <?php echo $row['dateExpirationPoints']?></li>
-		</ul>
-		<? }?>
-		<br>
-		<br>
-		<a>Les commandes : </a>
-		<ul>
-			<?                
-          $db = new PDO("mysql:host=localhost;dbname=conciergerie","root","");
-          $requeteListe=$db->prepare("select numeroCommande, pointsCommande from commande join commandepasseepar using(idCommande) join client using(idClient) where numeroClient=:numero;");
-          $requeteListe->bindValue(':numero', $numero);
-		  $requeteListe->execute();
-            while($row=$requeteListe->fetch()){
-                ?>
-				<li><?php echo $row['numeroCommande']?> : <?php echo $row['pointsCommande']?> points</li>
-		</ul>
-		<? }?>
-		<br>
-		<button onclick="window.location.href='creationCommande.php?numeroClient=<?=$row['numeroClient'];?>'">Créer une commande</button>
-		<button onclick="window.location.href='modificationClient.php?numeroClient=<?=$row['numeroClient'];?>'">Modifier</button>
-		<button onclick=<?php
-				$requeteSup=$db->prepare("delete from client where numeroClient=:numero;");
-				$numero = $row['numeroClient'];
-				$requeteSup->bindValue(':numero', $numero);
-				$requeteSup->execute();
-				?>>
-			Supprimer
-		</button>
+		<button onclick="<?php 
+				$numero = $_POST['numero'];
+				$nom = $_POST['nom'];
+				$prenom = $_POST['prenom'];
+				$anniversaire = $_POST['anniversaire'];
+				$adresse = $_POST['adresse'];
+				$tel = $_POST['tel'];
+				$mail = $_POST['mail'];
+				$fb = $_POST['fb'];
+				$insta = $_POST['insta'];
+				$points = $_POST['points'];				
+				$db = new PDO('mysql:host=localhost;dbname=conciergerie','root','');
+				if($points <= 300){
+					$requetePFidelite=$db->prepare('select idProgrammeFidelite from programmefidelite where nbPointsMaxFidelite = 300;');
+					$requetePFidelite->execute();
+					$idFidelite = $requetePFidelite->fetch();
+				}
+				else if($points > 300 && $points <= 700){					
+					$requetePFidelite=$db->prepare('select idProgrammeFidelite from programmefidelite where nbPointsMaxFidelite = 700;');
+					$requetePFidelite->execute();
+					$idFidelite = $requetePFidelite->fetch();
+				}
+				else{
+					$requetePFidelite=$db->prepare('select idProgrammeFidelite from programmefidelite where nbPointsMinFidelite = 701;');
+					$requetePFidelite->execute();
+					$idFidelite = $requetePFidelite->fetch();
+				}
+				$requeteEnr=$db->prepare('insert into client (numeroClient, nomClient, prenomClient, anniversaireClient,
+					adresseClient, telClient, mailClient, fbClient, instaClient, nbPointsTotalClient, idProgrammeFidelite,
+					idEntreprise) values (:numero, :nom, :prenom, :anniversaire, :adresse, :tel, :mail, :fb, :insta, :points, ;id, 1);');
+				$requeteEnr->bindValue(':numero', $numero);
+				$requeteEnr->bindValue(':nom', $nom);
+				$requeteEnr->bindValue(':prenom', $prenom);
+				$requeteEnr->bindValue(':anniversaire', $anniversaire);
+				$requeteEnr->bindValue(':adresse', $adresse);
+				$requeteEnr->bindValue(':tel', $tel);
+				$requeteEnr->bindValue(':mail', $mail);
+				$requeteEnr->bindValue(':fb', $fb);
+				$requeteEnr->bindValue(':insta', $insta);
+				$requeteEnr->bindValue(':points', $points);
+				$requeteEnr->bindValue(':id', $idFidelite);
+				$requeteEnr->execute();?>">Enregistrer</button>
+		<button onclick="ouvrirListeDesClients()">Annuler</button>
     </body>
 </html>

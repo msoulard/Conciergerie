@@ -74,12 +74,13 @@
 	</table>
 		<br>
 		<br>
-		<button onclick="window.location.href='modificationArticle.php?reference=<?=$row['referenceArticle'];?>'">Modifier</button>
-		<button onclick=<?php
-				$requeteSup=$db->prepare("delete from article where referenceArticle=:reference;");
+		<button onclick="window.location.href=modificationArticle.php?reference=<?=$row['referenceArticle'];?>">Modifier</button>
+		<button onclick="<?php
+				$db = new PDO('mysql:host=localhost;dbname=conciergerie','root','');
+				$requeteSup=$db->prepare('delete from article where referenceArticle=:reference;');
 				$requeteSup->bindValue(':reference', $reference);
 				$requeteSup->execute();
-				?>>
+				?>">
 			Supprimer
 		</button>
     </body>

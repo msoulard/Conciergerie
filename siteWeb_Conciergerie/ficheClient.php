@@ -98,12 +98,13 @@
 		<br>
 		<button onclick="window.location.href='creationCommande.php?numeroClient=<?=$row['numeroClient'];?>'">Créer une commande</button>
 		<button onclick="window.location.href='modificationClient.php?numeroClient=<?=$row['numeroClient'];?>'">Modifier</button>
-		<button onclick=<?php
-				$requeteSup=$db->prepare("delete from client where numeroClient=:numero;");
+		<button onclick="<?php
+				$db = new PDO('mysql:host=localhost;dbname=conciergerie','root','');
+				$requeteSup=$db->prepare('delete from client where numeroClient=:numero;');
 				$numero = $row['numeroClient'];
 				$requeteSup->bindValue(':numero', $numero);
 				$requeteSup->execute();
-				?>>
+				?>">
 			Supprimer
 		</button>
     </body>

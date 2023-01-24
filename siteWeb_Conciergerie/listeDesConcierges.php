@@ -40,12 +40,12 @@
 			<td><?php echo $row['mailConcierge']?></td>
 			<td>
 				<button onclick="window.location.href='ficheConcierge.php?numeroConcierge=<?=$row['numeroConcierge'];?>">Détails</button>
-				<button onclick=<?php
-										$requeteSup=$db->prepare("delete from concierge where numeroConcierge=:numero;");
+				<button onclick="<?php
+										$requeteSup=$db->prepare('delete from concierge where numeroConcierge=:numero;');
 										$numero = $row['numeroConcierge'];
 										$requeteSup->bindValue(':numero', $numero);
 										$requeteSup->execute();
-								?>>Supprimer</button>
+								?>">Supprimer</button>
 			</td>
 		</tr>
 	</table>

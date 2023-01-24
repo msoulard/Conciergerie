@@ -45,12 +45,12 @@
 			<td><?php echo $row['statutStock']?></td>
 			<td>
 				<button onclick="window.location.href='ficheArticle.php?referenceArticle=<?=$row['referenceArticle'];?>">Détails</button>
-				<button onclick=<?php
-										$requeteSup=$db->prepare("delete from article where referenceArticle=:reference;");
+				<button onclick="<?php
+										$requeteSup=$db->prepare('delete from article where referenceArticle=:reference;');
 										$reference = $row['referenceArticle'];
 										$requeteSup->bindValue(':reference', $reference);
 										$requeteSup->execute();
-								?>>>Supprimer</button>
+								?>">Supprimer</button>
 			</td>
 		</tr>
 	</table>

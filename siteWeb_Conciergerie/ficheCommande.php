@@ -185,11 +185,12 @@ toDepositeCommande, toPayCommande FROM commande WHERE numeroCommande=?;");
 		<br>
 		<button>Editer la facture</button>
 		<button onclick="window.location.href='modificationCommande.php?numeroCommande=<?=$row['numeroCommande'];?>'">Modifier</button>
-		<button onclick=<?php
-				$requeteSup=$db->prepare("delete from commande where numeroCommande=:numeroCommande;");
+		<button onclick="<?php				
+				$db = new PDO('mysql:host=localhost;dbname=conciergerie','root','');
+				$requeteSup=$db->prepare('delete from commande where numeroCommande=:numeroCommande;');
 				$requeteSup->bindValue(':numeroCommande', $numeroCommande);
 				$requeteSup->execute();
-				?>>
+				?>">
 			Supprimer
 		</button>
     </body>

@@ -45,12 +45,12 @@
 			<td><?php echo $row['notesCommande']?></td>
 			<td>
 				<button onclick="window.location.href='ficheCommande.php?numeroCommande=<?=$row['numeroCommande'];?>">Détails</button>
-				<button onclick=<?php
-										$requeteSup=$db->prepare("delete from commande where numeroCommande=:numero;");
+				<button onclick="<?php
+										$requeteSup=$db->prepare('delete from commande where numeroCommande=:numero;');
 										$numero = $row['numeroCommande'];
 										$requeteSup->bindValue(':numero', $numero);
 										$requeteSup->execute();
-								?>>Supprimer</button>
+								?>">Supprimer</button>
 			</td>
 		</tr>
 	</table>

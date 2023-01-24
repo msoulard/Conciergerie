@@ -26,8 +26,8 @@
 		</tr>
 		<tr>
 		<?php                
-          $db = new PDO("mysql:host=localhost;dbname=conciergerie","root","");
-          $requeteTableau=$db->prepare("select numeroClient, nomClient, prenomClient, nbPointsTotalClient, niveauFidelite from client join programmefidelite using(idProgrammeFidelite); ");
+          $db = new PDO('mysql:host=localhost;dbname=conciergerie','root','');
+          $requeteTableau=$db->prepare('select numeroClient, nomClient, prenomClient, nbPointsTotalClient, niveauFidelite from client join programmefidelite using(idProgrammeFidelite);');
           $requeteTableau->execute();
             while($row=$requeteTableau->fetch()){
                 ?>
@@ -37,13 +37,13 @@
 			<td><?php echo $row['niveauFidelite']
 					  echo $row['nbPointsTotalClient']?></td>
 			<td>
-				<button onclick="window.location.href='ficheClient.php?numeroClient=<?=$row['numeroClient'];?>'">Détails</button>
-				<button onclick=<?php
-										$requeteSup=$db->prepare("delete from client where numeroClient=:numero;");
+				<button onclick="window.location.href=ficheClient.php?numeroClient=<?=$row['numeroClient'];?>">Détails</button>
+				<button onclick="<?php
+										$requeteSup=$db->prepare('delete from client where numeroClient=:numero;');
 										$numero = $row['numeroClient'];
 										$requeteSup->bindValue(':numero', $numero);
 										$requeteSup->execute();
-								?>>
+								?>">
 					Supprimer
 				</button>
 			</td>
